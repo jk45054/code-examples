@@ -1,5 +1,3 @@
-from binascii import hexlify, unhexlify
-
 class RC4:
     S = None
     i = 0
@@ -7,16 +5,16 @@ class RC4:
     dropped = 0
     # constructor for instance of class RC4
     # if n > 0, drop first n key bytes - alias RC4-drop[n]
-    def __init__(self, keybytes, n=0):
+    def __init__(self, key: bytes, n: int = 0):
         self.i = 0
         self.j = 0
         self.S = bytearray(256)
-        self.KSA(keybytes)
+        self.KSA(key)
         while n > 0:
             self.PRGA()
             n = n - 1
     # Key Scheduling Algorithm (KSA)
-    def KSA(self, key):
+    def KSA(self, key: bytes):
         for i in range(256):
             self.S[i] = i
         j = 0
@@ -29,9 +27,9 @@ class RC4:
         self.j = (self.j + self.S[self.i]) % 256
         self.S[self.i], self.S[self.j] = self.S[self.j], self.S[self.i]
         return (self.S[(self.S[self.i] + self.S[self.j]) % 256])
-    def crypt(self, data):
+    # Encrypt/decrypt bytes
+    def crypt(self, data: bytes) -> bytes:
         result = bytearray()
         for b in data:
             result.append(b ^ self.PRGA())
-        return(result)
-
+        return(bytes(result))
