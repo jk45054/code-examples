@@ -121,7 +121,7 @@ c = crc32b_forward_leftshift(s.encode('utf-8'))
 print("crc32b_forward_leftshift [ITU V.42, used in pkzip] = {}".format(hex(c & 0xffffffff)))
 
 
-# if you read this, you are dumbo!
+# read data for crc32 hashing
 with open(sys.argv[1], "rb") as f:
 	dat = f.read()
 
@@ -135,10 +135,6 @@ b = crc32a_forward_leftshift(dat)
 print("crc32a_forward_leftshift [ITU I.363.5, used in bzip2] = {}".format(hex(b & 0xffffffff)))
 b = crc32a_reverse_rightshift(dat)
 print("crc32a_reverse_rightshift [ITU I.363.5, used in bzip2] = {}".format(hex(b & 0xffffffff)))
-
-# calc crc32a, with last bitwise NOT missing
-b = crc32a_forward_leftshift_noFinalNot(dat)
-print("crc32a_forward_leftshift_noFinalNot [ITU I.363.5, without last binary NOT] = {}".format(hex(b & 0xffffffff)))
 
 # calc crc32b, ITU V.42 (Pkzip)
 c = crc32b_reverse_rightshift(dat)
